@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block css-additional %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header__wrapper">
+            <a class="site-header__button" href="#">Домой</a>
+            <div class="user-info">
+                {% if user.is_authenticated %}
+                <a href="/profile">{{ user }}</a>
+                <a href="/logout">Logout</a>
+                {% else %}
+                <a href="/login">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    {% block content %}{% endblock %}
+</body>
+</html>

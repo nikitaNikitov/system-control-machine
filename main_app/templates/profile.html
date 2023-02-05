@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css-additional %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+{% block title %}
+Главная страница
+{% endblock %}
+
+{% block content %}
+<div class="site-block__wrapper">
+    <div class="profile-info">
+        Имя пользователя: {{username}}<br>
+        ФИО: {{last_name}} {{first_name}} {{middle_name}}<br>
+        Группа: {{group}}<br>
+        Статус: {{status}}
+    </div>
+</div>
+
+
+{% endblock %}
