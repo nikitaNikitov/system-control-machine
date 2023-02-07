@@ -23,8 +23,14 @@ SECRET_KEY='=@=qfzxp#+r(i8713(htg)vg!khac%e+9m$nhs*t966^f&ab#m'
 DEBUG - Режим отладки, включен, чтобы видеть различные предупреждения и чтобы не указывать ALLOWED_HOSTS в settings.py.
 SECRET_KEY - Секретный ключ, должен быть уникальный для каждого сервера, для генерации рекомендую использовать [этот генератор](https://djecrety.ir/).
 
+Также необходимо подготовить базу данных, для этого введите:
+```powershell
+python manage.py makemigrations
+python manage.py migrate --run-syncdb
+```
+
 После всего, для запуска сервера пишем:
 ```powershell
-python manage runserver
+python manage.py runserver
 ```
 Сервер будет запущен на адресе http://127.0.0.1:8000
