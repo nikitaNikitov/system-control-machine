@@ -1,0 +1,35 @@
+[tool.mypy]
+exclude = "venv"
+plugins = "mypy_django_plugin.main"
+
+[tool.django-stubs]
+django_settings_module = "main_site.settings"
+
+[tool.pylint]
+load-plugins = "pylint_django"
+django-settings-module = "main_site.settings"
+FORMAT.indent-string = "\t"
+ignore-paths = "venv"
+recursive = true
+
+[[tool.mypy.overrides]]
+module = "environ"
+ignore_missing_imports = true
+
+[tool.yapf]
+based_on_style = "google"
+column_limit = 100
+indent_width = 4
+continuation_indent_width = 4
+use_tabs = true
+CONTINUATION_ALIGN_STYLE = "VALIGN-RIGHT"
+split_all_comma_separated_values = false
+split_arguments_when_comma_terminated = true
+split_before_named_assigns = true
+dedent_closing_brackets = true
+indent_closing_brackets = false
+coalesce_brackets = true
+
+
+[tool.yapfignore]
+ignore_patterns = ["venv"]

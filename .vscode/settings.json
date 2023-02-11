@@ -1,0 +1,27 @@
+{
+	"editor.formatOnSave": true,
+	"python.formatting.provider": "yapf",
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"editor.tabSize": 4,
+	"python.linting.enabled": true,
+	"python.linting.pylintEnabled": true,
+	"python.linting.pylintPath": "pylint",
+	"python.linting.lintOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": true
+	},
+	"python.linting.mypyEnabled": true,
+	"python.analysis.typeCheckingMode": "basic",
+	"formatFiles.excludedFolders": [
+		"node_modules",
+		".vscode",
+		".git",
+		"dist",
+		".chrome",
+		".mypy_cache",
+		"venv"
+	],
+	"formatFiles.excludePattern": "**/__pycache__/**",
+	"formatFiles.useGitIgnore": true
+}

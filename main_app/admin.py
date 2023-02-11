@@ -3,6 +3,7 @@
 """
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+
 from .models import CustomUser
 
 # Register your models here.
@@ -15,46 +16,29 @@ from .models import CustomUser
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    """
-    Класс кастомного админа
+	"""
+	Класс кастомного админа
 
-    Создан для добавления дополнительных полей на странице управления пользователей в базе данных
-    """
-    inlines = []
-    model = CustomUser
+	Создан для добавления дополнительных полей на странице управления пользователей в базе данных
+	"""
 
-    list_display = ['username', 'first_name',
-                    'last_name', 'middle_name', 'group', 'is_staff']
+	inlines = []
+	model = CustomUser
 
-    add_fieldsets = (
-        *UserAdmin.add_fieldsets,
-        (
-            'Пользовательские поля',
-            {
-                'fields': (
-                    'first_name',
-                    'last_name',
-                    'middle_name',
-                    'group',
-                    'status'
-                )
-            }
-        )
-    )
+	list_display = ['username', 'first_name', 'last_name', 'middle_name', 'group', 'is_staff']
 
-    fieldsets = (
-        *UserAdmin.fieldsets,
-        (
-            'Пользовательские поля',
-            {
-                'fields': (
-                    'middle_name',
-                    'group',
-                    'status'
-                )
-            }
-        )
-    )
+	add_fieldsets = (
+		*UserAdmin.add_fieldsets,
+		(
+			'Пользовательские поля', {
+				'fields': ('first_name', 'last_name', 'middle_name', 'group', 'status')
+			}
+		),
+	)
 
-# admin.site.unregister(User)
-# admin.site.register(User, CustomUserAdmin)
+	fieldsets = (
+		*UserAdmin.fieldsets,
+		('Пользовательские поля', {
+			'fields': ('middle_name', 'group', 'status')
+		}),
+	)

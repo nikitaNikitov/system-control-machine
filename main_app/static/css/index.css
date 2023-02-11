@@ -1,63 +1,63 @@
 :root {
-    --header-height: 44px
+	--header-height: 44px
 }
 
 body {
-    margin: 0;
+	margin: 0;
 }
 
 .site-header__wrapper {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 1000px;
-    height: inherit;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 1000px;
+	height: inherit;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
 }
 
 .site-header__button {
-    background-color: burlywood;
+	background-color: burlywood;
 }
 
 .site-header__button:hover {
-    background-color: rgb(247, 205, 151);
+	background-color: rgb(247, 205, 151);
 }
 
 .site-header__button:active {
-    background-color: rgb(145, 118, 83);
+	background-color: rgb(145, 118, 83);
 }
 
 
 .site-header {
-    background-color: antiquewhite;
-    height: var(--header-height);
+	background-color: antiquewhite;
+	height: var(--header-height);
 }
 
 .site-header a {
-    padding: 0px 12px;
-    line-height: var(--header-height);
-    text-decoration: none;
-    color: black;
+	padding: 0px 12px;
+	line-height: var(--header-height);
+	text-decoration: none;
+	color: black;
 }
 
 .site-block__wrapper {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 800px;
-    margin-top: 24px;
-    height: inherit;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 800px;
+	margin-top: 24px;
+	height: inherit;
 }
 
 .profile-info {
-    padding: 16px;
-    background-color: #fffbda;
+	padding: 16px;
+	background-color: #fffbda;
 }
 
 .user-info {
-    background-color: rgb(255 253 214);
-    height: 100%;
-    margin-left: auto;
-    display: flex;
-    align-items: center;
+	background-color: rgb(255 253 214);
+	height: 100%;
+	margin-left: auto;
+	display: flex;
+	align-items: center;
 }
