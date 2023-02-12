@@ -89,8 +89,8 @@ python manage.py migrate --run-syncdb
 
 <!-- TODO: Необходимо описать, как установить ssl для сервера, без него не пустит по https -->
 
-После запускаем сервер:
+После запускаем сервер указывая ip и порт (например. 0.0.0.0:8000):
 
 ```bash
-python manage.py runserver
+python manage.py runserver your_server_ip:port
 ```
