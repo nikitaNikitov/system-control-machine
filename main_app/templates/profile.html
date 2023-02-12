@@ -11,12 +11,26 @@
 
 {% block content %}
 <div class="site-block__wrapper">
-    <div class="profile-info">
-        Имя пользователя: {{username}}<br>
-        ФИО: {{last_name}} {{first_name}} {{middle_name}}<br>
-        Группа: {{group}}<br>
-        Статус: {{status}}
-    </div>
+	{% if username != None %}
+	<div class="profile-info">
+		Имя пользователя: {{username}}<br>
+		ФИО: {{last_name}} {{first_name}} {{middle_name}}<br>
+		Группа: {{group}}<br>
+		Статус: {{status}}
+	</div>
+	{% endif %}
+
+	<div class="etst">
+
+	</div>
+
+	{% if messages %}
+	{% for message in messages %}
+	<div class="profile-info">
+		{{ message|safe }}
+	</div>
+	{% endfor %}
+	{% endif %}
 </div>
 
 

@@ -1,0 +1,17 @@
+body {
+	display: flex;
+	margin: 0;
+	height: 100vh;
+}
+
+.qr-code img {
+	width: 90vmin;
+	image-rendering: pixelated;
+}
+
+.container {
+	display: flex;
+	margin: auto;
+	flex-direction: column;
+	align-items: center;
+}

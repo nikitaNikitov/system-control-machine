@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>QR Код</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/qr.css' %}">
+	<link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
+</head>
+
+<body>
+	<div class="container">
+		{% if code != None %}
+		<div class="qr-code"></div>
+		<div class="qr-code-time">
+		</div>
+		{% else %}
+		QR Код отсутствует
+		{% endif %}
+
+		{% if messages %}
+		{% for message in messages %}
+		<div class="alert alert-{{ message.tags }}">
+			{{ message|safe }}
+		</div>
+		{% endfor %}
+		{% endif %}
+	</div>
+</body>
+{% if code != None %}
+<script type="text/javascript">
+	const token = "{{code}}";
+	const timeStart = "{{time_start}}";
+	const timeExpire = "{{time_expire}}";
+
+	var timeText = document.querySelector(".qr-code-time");
+	var time = timeExpire - Math.floor(new Date().getTime() / 1000);
+
+	console.log(timeExpire, timeStart);
+	function generateQR(userInput) {
+		new QRCode(document.querySelector(".qr-code"), {
+			text: `${userInput}`,
+			width: 29.5,
+			height: 29.5,
+			colorDark: "#000000",
+			colorLight: "#ffffff",
+			correctLevel: QRCode.CorrectLevel.H
+		});
+	}
+
+	function timeCount() {
+		time--;
+		if (time < 0) {
+			timeText.textContent = "Время действия QR кода закончилось, перезагрузите страницу";
+			return;
+		}
+		else {
+			if (time > timeExpire - timeStart) {
+				timeText.textContent = `QR код будет активен через: ${time - (timeExpire - timeStart)}`;
+			}
+			else {
+				timeText.textContent = `QR будет действовать: ${time}`;
+			}
+		}
+		setTimeout(timeCount, 1000);
+	}
+	generateQR(token);
+	timeCount();
+	console.log(`|${token}|`);
+</script>
+{% endif %}
+
+</html>
