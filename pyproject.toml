@@ -30,6 +30,5 @@ dedent_closing_brackets = true
 indent_closing_brackets = false
 coalesce_brackets = true
 
-
 [tool.yapfignore]
 ignore_patterns = ["venv"]

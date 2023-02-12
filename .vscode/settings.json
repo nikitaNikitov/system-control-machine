@@ -13,6 +13,10 @@
 	},
 	"python.linting.mypyEnabled": true,
 	"python.analysis.typeCheckingMode": "basic",
+	"python.analysis.ignore": [
+		"venv",
+		"**/__pycache__",
+	],
 	"formatFiles.excludedFolders": [
 		"node_modules",
 		".vscode",
@@ -23,5 +27,8 @@
 		"venv"
 	],
 	"formatFiles.excludePattern": "**/__pycache__/**",
-	"formatFiles.useGitIgnore": true
+	"formatFiles.useGitIgnore": true,
+	"vscord.ignore.repositories": [
+		"system-control-machine"
+	],
 }
