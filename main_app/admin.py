@@ -4,14 +4,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import CustomUser
+from .models import CustomUser, QRCode
 
-# Register your models here.
-# admin.site.register(CustomUser)
-# class CustomUserInline(admin.StackedInline):
-#     model = CustomUser
-#     can_delete = False
-#     verbose_name_plural = 'Custom!'
+admin.site.register(QRCode)
 
 
 @admin.register(CustomUser)
