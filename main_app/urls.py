@@ -4,7 +4,7 @@
 from django.contrib import admin
 from django.urls import include, path
 
-from .views import (generate_qr, index_page, login_user, logout_user, profile, register_user)
+from .views import generate_qr, index_page, login_user, logout_user, profile, register_user
 
 urlpatterns = [
 	path('admin/', admin.site.urls),
