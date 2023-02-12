@@ -96,6 +96,7 @@ def profile(request: WSGIRequest) -> HttpResponse:
 	if user is None:
 		messages.warning(request, 'Пользователь не найден!')
 		return render(request, 'profile.html')
+
 	form = {
 		'username': user.username,
 		'first_name': user.first_name,
