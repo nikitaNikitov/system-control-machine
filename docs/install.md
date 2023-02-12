@@ -94,3 +94,9 @@ python manage.py migrate --run-syncdb
 ```bash
 python manage.py runserver your_server_ip:port
 ```
+
+Чтобы обновить:
+
+```bash
+git pull origin main
+```
