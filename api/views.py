@@ -28,6 +28,6 @@ def get_user_from_code(_, code: str) -> HttpResponse:
 	data = {
 		'username': user.username,
 		'fullname': f'{user.last_name} {user.first_name} {user.middle_name}',
-		'permission': user.permissions
+		'permissions': user.permissions
 	}
 	return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
