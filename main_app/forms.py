@@ -34,7 +34,15 @@ class RegisterUserForm(UserCreationForm):
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		self.fields['password1'].widget = forms.PasswordInput(attrs={'placeholder': 'Пароль'})
+		self.fields['password1'].widget = forms.PasswordInput(
+			attrs={
+				'placeholder': 'Пароль',
+				"autocomplete": "new-password"
+			}
+		)
 		self.fields['password2'].widget = forms.PasswordInput(
-			attrs={'placeholder': 'Подтверждение пароля'}
+			attrs={
+				'placeholder': 'Подтверждение пароля',
+				"autocomplete": "new-password"
+			}
 		)
