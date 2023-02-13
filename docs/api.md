@@ -16,7 +16,7 @@
   {
     "username": "Username", 
     "fullname": "Full name", 
-     "permissions": {}
+    "permissions": {}
   }
   ```
 
