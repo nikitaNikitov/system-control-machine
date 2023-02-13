@@ -37,14 +37,18 @@
 	const timeStart = "{{time_start}}";
 	const timeExpire = "{{time_expire}}";
 
+	var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+	var height = (window.innerHeight > 0) ? window.innerHeight : screen.height;
+	var min = (width > height ? height : width) * 0.9
+
 	var timeText = document.querySelector(".qr-code-time");
 	var time = timeExpire - Math.floor(new Date().getTime() / 1000);
 
 	function generateQR(userInput) {
 		new QRCode(document.querySelector(".qr-code"), {
 			text: `${userInput}`,
-			width: 400,
-			height: 400,
+			width: min,
+			height: min,
 			colorDark: "#000000",
 			colorLight: "#ffffff",
 			correctLevel: QRCode.CorrectLevel.H
