@@ -9,6 +9,13 @@ body {
 	image-rendering: pixelated;
 }
 
+.qr-code-time {
+	font-size: 6vmin;
+	padding: 10px;
+	background-color: #efefef;
+	border-radius: 0 0 10px 10px;
+}
+
 .container {
 	display: flex;
 	margin: auto;
