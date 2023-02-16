@@ -6,5 +6,5 @@ from django.urls import path
 from .views import get_user_from_code
 
 urlpatterns = [
-	path('code/<code>', get_user_from_code),
+	path('getUser', get_user_from_code),
 ]
