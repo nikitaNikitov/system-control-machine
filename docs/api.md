@@ -16,8 +16,8 @@
 
 ##### Запрос
 
-- GET -> getUser?code=code
-- POST ->
+- `GET` -> getUser?code=code
+- `POST` ->
 
 ```json
   {
