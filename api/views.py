@@ -3,6 +3,7 @@
 """
 from time import time
 
+from django.contrib.auth.decorators import login_required
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -42,3 +43,17 @@ def get_user_from_code(request: WSGIRequest) -> HttpResponse:
 		}
 
 	return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
+
+
+@login_required()
+def get_qr(request: WSGIRequest) -> HttpResponse:
+	"""
+	Функция получеиие QR кода для пользователя
+	"""
+
+	user = CustomUser.objects.filter(username=request.user).first()
+	if user is None:
+		data = {'error': 10, 'error_msg': 'User is not found'}
+		return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
+
+	return JsonResponse(utils.generate_code(user), json_dumps_params={'ensure_ascii': False})
