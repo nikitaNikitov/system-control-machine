@@ -1,11 +1,6 @@
 """
 Модуль для создания логики отрисовки страниц
 """
-import datetime
-import secrets
-import string
-from time import time
-
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -13,10 +8,10 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.shortcuts import redirect, render
 
-from .forms import RegisterUserForm
-from .models import CustomUser, QRCode
+from api import utils
 
-SYMBVOLS = string.ascii_letters + string.digits
+from .forms import RegisterUserForm
+from .models import CustomUser
 
 
 @login_required()
@@ -123,32 +118,5 @@ def generate_qr(request: WSGIRequest):
 		messages.warning(request, 'Пользователь не найден!')
 		return render(request, html_file)
 
-	usercode = QRCode.objects.filter(user=user).first()
-	if usercode is not None:
-		if usercode.time_expire.timestamp() - time() > 0:
-			form = {
-				'code': usercode.code,
-				'time_start': int(usercode.time_start.timestamp()),
-				'time_expire': int(usercode.time_expire.timestamp()),
-			}
-			return render(request, html_file, form)
-
-		usercode.delete()
-
-	code = ''.join(secrets.choice(SYMBVOLS) for _ in range(16))
-	time_start = datetime.datetime.now() + datetime.timedelta(seconds=5)
-	time_expire = datetime.datetime.now() + datetime.timedelta(minutes=5, seconds=5)
-
-	QRCode(
-		user=user,
-		code=code,
-		time_start=time_start,
-		time_expire=time_expire,
-	).save()
-
-	form = {
-		'code': code,
-		'time_start': int(time_start.timestamp()),
-		'time_expire': int(time_expire.timestamp()),
-	}
-	return render(request, html_file, form)
+	data = utils.generate_code(user)
+	return render(request, html_file, data)
