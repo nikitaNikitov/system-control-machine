@@ -15,8 +15,8 @@
 	<form class="auth-form" method="post">
 		{% csrf_token %}
 		<div class="auth-form__title">Авторизация</div>
-		<input type="text" name="username" placeholder="Имя пользователя" />
-		<input type="password" name="password" placeholder="Пароль" />
+		<input type="text" name="username" required="true" placeholder="Имя пользователя" />
+		<input type="password" name="password" required="true" placeholder="Пароль" />
 		<input type="submit" value="Войти">
 		<a class="auth-form__signup" href="/signup/">Зарегистрироваться</a>
 		{% if messages %}
