@@ -1,5 +1,5 @@
 {
-	"editor.formatOnSave": true,
+	"editor.formatOnSave": false,
 	"python.formatting.provider": "yapf",
 	"editor.detectIndentation": false,
 	"editor.insertSpaces": false,
@@ -31,4 +31,10 @@
 	"vscord.ignore.repositories": [
 		"system-control-machine"
 	],
+	"markdownlint.config": {
+		"default": true,
+		"MD024": {
+			"allow_different_nesting": true
+		}
+	},
 }
