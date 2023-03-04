@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css-additional %}
+<link rel="stylesheet" href="{% static 'css/manage.css' %}">
+<link rel="stylesheet" href="{% static 'css/modal.css' %}">
+<script src="{% static 'js/manage.js' %}"></script>
+{% endblock %}
+{% block title %}
+Главная страница
+{% endblock %}
+
+{% block content %}
+<div class="site-block__wrapper">
+	{% if username != None %}
+	<div class="profile-info">
+		Имя пользователя: {{username}}<br>
+		ФИО: {{last_name}} {{first_name}} {{middle_name}}<br>
+		Группа: {{group}}<br>
+		Статус: {{status}}
+
+	</div>
+	{% endif %}
+	{% if messages %}
+	{% for message in messages %}
+	<div class="profile-info">
+		{{ message|safe }}
+	</div>
+	{% endfor %}
+	{% endif %}
+
+	<div class="search">
+		<input type="search" class="table-search" id="table-search-input" placeholder="Поиск">
+		<button class="table-search" id="table-search-button">Поиск</button>
+	</div>
+
+	<div class="action">
+		<button class="action-button" id="give-permission">Выдать право</button>
+		<button class="action-button" id="revoke-permission">Отобрать право</button>
+	</div>
+
+	<table class="user-table">
+		<caption>
+			<h2>Студенты</h2>
+		</caption>
+		<colgroup>
+			<col span="1" style="width: 4%;">
+			<col span="1" style="width: 56%;">
+			<col span="1" style="width: 20%;">
+			<col span="1" style="width: 20%;">
+		</colgroup>
+		<thead>
+			<tr>
+				<th><input type="checkbox" name="select-all" id="select-all" /></th>
+				<th>ФИО</th>
+				<th>Группа</th>
+				<th>Права</th>
+			</tr>
+		</thead>
+		<tbody id="table-body">
+		</tbody>
+	</table>
+
+	<div class="table-pages">
+		<div id="table-page">
+			<span>1</span>
+			<span>2</span>
+			<span>3</span>
+			<span>4</span>
+			<span>5</span>
+		</div>
+		<div id="table-limit">
+			Показать:
+			<a>1</a>
+			<a>3</a>
+			<a>10</a>
+			<a>100</a>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}
+
+{% block script_after %}
+{% endblock %}
