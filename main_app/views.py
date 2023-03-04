@@ -158,8 +158,4 @@ def manage(request: WSGIRequest):
 		'group': user.group,
 		'status': user.status_display(),
 	}
-	query = utils.get_params(request).get("query")
-	result = CustomUser.search_query(query, 10)
-
-	form['query_set'] = result
 	return render(request, 'manage.html', form)
