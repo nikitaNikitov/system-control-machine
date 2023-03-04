@@ -26,7 +26,7 @@ class CustomUserAdmin(UserAdmin):
 		*UserAdmin.add_fieldsets,
 		(
 			'Пользовательские поля', {
-				'fields': ('first_name', 'last_name', 'middle_name', 'group', 'status')
+				'fields': ('first_name', 'last_name', 'middle_name', 'group', 'status', 'data')
 			}
 		),
 	)
@@ -34,6 +34,6 @@ class CustomUserAdmin(UserAdmin):
 	fieldsets = (
 		*UserAdmin.fieldsets,
 		('Пользовательские поля', {
-			'fields': ('middle_name', 'group', 'status')
+			'fields': ('middle_name', 'group', 'status', 'data')
 		}),
 	)
