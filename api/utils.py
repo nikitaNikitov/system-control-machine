@@ -92,12 +92,18 @@ def has_only_russian_letters(name) -> bool:
 
 
 def check_access_from_user(user: dict, machine_name: str) -> bool | dict:
+	"""
+	Проверяет, есть ли доступ у пользователя к данному станку
+	"""
 	if 'data' in user:
 		return check_access_from_data(json.loads(user['data']), machine_name)
 	return False
 
 
 def check_access_from_data(data: dict, machine_name: str) -> bool | dict:
+	"""
+	Проверяет, есть ли доступ в информации к данному станку
+	"""
 	if 'permission' not in data or machine_name not in data['permission']:
 		return False
 	data = data['permission'][machine_name]

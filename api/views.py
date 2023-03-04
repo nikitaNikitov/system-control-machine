@@ -191,6 +191,9 @@ def manage_handler(request: WSGIRequest):
 
 
 def manage_configurate_response_data(query_set):
+	"""
+	Превращает набор запросов в более удобный вид для страницы
+	"""
 	users = {}
 	if 'users' in query_set:
 		for query_user in query_set['users']:
@@ -214,6 +217,9 @@ def manage_configurate_response_data(query_set):
 
 @login_required
 def give_permission(request: WSGIRequest) -> JsonResponse:
+	"""
+	Функция, которая выдает право пльзователю/ям на станок на время от и до
+	"""
 	user = check_user(request, is_teacher=True)
 	if isinstance(user, JsonResponse):
 		return user
@@ -263,6 +269,9 @@ def give_permission_users(
 	time_start: int = 0,
 	comment: str = ''
 ) -> dict[str, Any]:
+	"""
+	Функция, которая записывает в бд информацию о доступе к станку
+	"""
 	success: dict[str, Any] = {'success': True}
 	if not who_give.is_teacher():
 		success['success'] = False
