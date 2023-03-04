@@ -1,6 +1,8 @@
 """
 Модуль для создания логики отрисовки страниц
 """
+from typing import Any
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -66,7 +68,7 @@ def register_user(
 	if request.method == 'POST':
 		form = RegisterUserForm(request.POST)
 		if form.is_valid():
-			user = form.save(commit=False)
+			user: CustomUser = form.save(commit=False)
 			user.save()
 			return redirect('/login/')
 	else:
@@ -87,9 +89,19 @@ def profile(request: WSGIRequest) -> HttpResponse:
 
 	Отрисовывает страницу профиля с информацией о пользователе
 	"""
-	user = CustomUser.objects.filter(username=request.user).first()
+	return profile_username(request=request, username=request.user.get_username())
+
+
+@login_required()
+def profile_username(request: WSGIRequest, username: str) -> HttpResponse:
+	"""
+	Функция отрисовки страницы профиля для пользователя
+
+	Отрисовывает страницу профиля с информацией о пользователе
+	"""
+	user = CustomUser.objects.filter(username=username).first()
 	if user is None:
-		messages.warning(request, 'Пользователь не найден!')
+		messages.warning(request, utils.Error.USER_NOT_FOUND.value)
 		return render(request, 'profile.html')
 
 	form = {
@@ -104,7 +116,7 @@ def profile(request: WSGIRequest) -> HttpResponse:
 
 
 @login_required()
-def generate_qr(request: WSGIRequest):
+def generate_qr(request: WSGIRequest) -> HttpResponse:
 	"""
 	Функция отрисовки QR кода для пользователя
 
@@ -115,8 +127,39 @@ def generate_qr(request: WSGIRequest):
 
 	user = CustomUser.objects.filter(username=request.user).first()
 	if user is None:
-		messages.warning(request, 'Пользователь не найден!')
+		messages.warning(request, utils.Error.USER_NOT_FOUND.value)
 		return render(request, html_file)
 
 	data = utils.generate_code(user)
 	return render(request, html_file, data)
+
+
+@login_required()
+def manage(request: WSGIRequest):
+	"""
+	Функция отрисовки меню управления студентами
+
+	Отрисовывает страницу с поиском и таблицей зарегестрированных студентов
+	"""
+	user = CustomUser.objects.filter(username=request.user).first()
+	if user is None:
+		messages.warning(request, utils.Error.USER_NOT_FOUND.value)
+		return render(request, 'error.html')
+
+	if not user.is_teacher():
+		messages.error(request, utils.Error.USER_NOT_TEACHER.value)
+		return render(request, 'error.html', status=403)
+
+	form: dict[str, Any] = {
+		'username': user.username,
+		'first_name': user.first_name,
+		'last_name': user.last_name,
+		'middle_name': user.middle_name,
+		'group': user.group,
+		'status': user.status_display(),
+	}
+	query = utils.get_params(request).get("query")
+	result = CustomUser.search_query(query, 10)
+
+	form['query_set'] = result
+	return render(request, 'manage.html', form)
