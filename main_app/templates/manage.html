@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css-additional %}
+<link rel="stylesheet" href="{% static 'css/manage.css' %}">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="{% static 'css/modal.css' %}">
+<script defer type="module" src="{% static 'js/manage.js' %}"></script>
+<script defer src="{% static 'js/modal.js' %}"></script>
+{% endblock %}
+{% block title %}
+Управление пользователями
+{% endblock %}
+
+{% block content %}
+<div class="site-block__wrapper">
+	{% if username != None %}
+	<div class="profile-info">
+		Имя пользователя: {{username}}<br>
+		ФИО: {{last_name}} {{first_name}} {{middle_name}}<br>
+		Группа: {{group}}<br>
+		Статус: {{status}}
+
+	</div>
+	{% endif %}
+	{% if messages %}
+	{% for message in messages %}
+	<div class="profile-info">
+		{{ message|safe }}
+	</div>
+	{% endfor %}
+	{% endif %}
+
+	<div class="search">
+		<input type="search" class="table-search" id="table-search-input" placeholder="Поиск">
+		<button class="table-search" id="table-search-button">Поиск</button>
+	</div>
+
+	<div class="action">
+		<button data-modal="give-permission-modal" class="action-button open-modal" id="give-permission">Выдать
+			право</button>
+		<button data-modal="revoke-permission-modal" class="action-button open-modal" id="revoke-permission">Отобрать
+			право</button>
+	</div>
+
+	<table class="user-table">
+		<caption>
+			<h2>Студенты</h2>
+		</caption>
+		<colgroup>
+			<col span="1" style="width: 4%;">
+			<col span="1" style="width: 56%;">
+			<col span="1" style="width: 20%;">
+			<col span="1" style="width: 20%;">
+		</colgroup>
+		<thead>
+			<tr>
+				<th><input type="checkbox" name="select-all" id="select-all" aria-label="Выбрать всех пользователей" />
+				</th>
+				<th>ФИО</th>
+				<th>Группа</th>
+				<th>Права</th>
+			</tr>
+		</thead>
+		<tbody id="table-body">
+		</tbody>
+	</table>
+
+	<div class="table-pages">
+		<div id="table-page">
+			<span>1</span>
+		</div>
+		<div id="table-limit">
+			<div class="text">Показать:</div>
+			<a>1</a>
+			<a>3</a>
+			<a>10</a>
+			<a>100</a>
+		</div>
+	</div>
+</div>
+<div id="give-permission-modal" style="display: none;" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			Выдача прав
+			<span data-modal="give-permission-modal" class="close-modal">&times;</span>
+		</div>
+		<div class="modal-body">
+			<form id="give-permission-form" method="post">
+				<div class="modal-input">
+					Станок:
+					<input name="machine_id" list="machines" id="give-permission-machine-input">
+				</div>
+				<div class="modal-response-info" style="display: none">
+				</div>
+				<button id="give-permission-button" type="submit">Выдать</button>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="revoke-permission-modal" style="display: none;" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			Забирание прав
+			<span data-modal="revoke-permission-modal" class="close-modal">&times;</span>
+		</div>
+		<div class="modal-body">
+			<form id="revoke-permission-form" method="post">
+				<div class="modal-input">
+					Станок:
+					<input name="machine_id" list="machines" id="revoke-permission-machine-input">
+				</div>
+				<div class="modal-response-info" style="display: none">
+				</div>
+				<button id="revoke-permission-button" type="submit">Забрать</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+<datalist id="machines">
+</datalist>
+
+{% endblock %}
+
+{% block script_after %}
+{% endblock %}

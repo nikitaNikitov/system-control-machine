@@ -9,7 +9,7 @@ django_settings_module = "main_site.settings"
 load-plugins = "pylint_django"
 django-settings-module = "main_site.settings"
 FORMAT.indent-string = "\t"
-ignore-paths = "venv"
+ignore-paths = ["venv", "main_app/migrations"]
 recursive = true
 
 [[tool.mypy.overrides]]

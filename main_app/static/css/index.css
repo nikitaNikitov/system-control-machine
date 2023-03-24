@@ -1,5 +1,6 @@
 :root {
-	--header-height: 44px
+	--header-height: 44px;
+	--background-color: #fffbda;
 }
 
 body {
@@ -51,13 +52,66 @@ body {
 
 .profile-info {
 	padding: 16px;
-	background-color: #fffbda;
+	background-color: var(--background-color);
 }
 
 .user-info {
-	background-color: rgb(255 253 214);
+	user-select: none;
 	height: 100%;
 	margin-left: auto;
 	display: flex;
+	gap: 2px;
 	align-items: center;
+	background-color: #d3c8b7;
+	z-index: 1;
+}
+
+.profile-action,
+.teacher-action {
+	width: max-content;
+	gap: 10px;
+	display: flex;
+	background-color: var(--background-color);
+	margin: 10px;
+	align-items: center;
+	max-width: -webkit-fill-available;
+	flex-wrap: wrap;
+}
+
+.profile-action a,
+.teacher-action a {
+	line-height: 40px;
+	background-color: antiquewhite;
+	padding: 8px;
+	margin: 10px;
+	text-decoration: none;
+	color: black;
+}
+
+.user-info a {
+	background-color: rgb(255 253 214);
+}
+
+.user-info a:hover {
+	background-color: rgb(221 219 190);
+}
+
+#button-menu {
+	cursor: pointer;
+	display: none;
+}
+
+@media screen and (max-width: 540px) {
+	.user-info {
+		flex-direction: column;
+	}
+
+	.user-info a {
+		width: -webkit-fill-available;
+		display: none;
+	}
+
+	#button-menu {
+		display: block;
+	}
 }

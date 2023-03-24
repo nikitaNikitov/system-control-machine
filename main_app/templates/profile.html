@@ -2,9 +2,6 @@
 
 {% load static %}
 
-{% block css-additional %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
-{% endblock %}
 {% block title %}
 Главная страница
 {% endblock %}
@@ -20,8 +17,28 @@
 	</div>
 	{% endif %}
 
-	<a href="/qr">Создать QR код</a>
+	{% if messages %}
+	{% for message in messages %}
+	<div class="profile-info">
+		{{ message|safe }}
+	</div>
+	{% endfor %}
+	{% endif %}
 
+	<div class="profile-action">
+		{% if username == user.username %}
+		<a href="/qr">Создать QR код</a>
+		{% endif %}
+
+	</div>
+	{% if user.is_teacher %}
+	<div class="teacher-action">
+		<a href="/qr">Выдать права</a>
+		{% if username == user.username %}
+		<a href="/machines">Управление станками</a>
+		{% endif %}
+	</div>
+	{% endif %}
 
 	{% if messages %}
 	{% for message in messages %}

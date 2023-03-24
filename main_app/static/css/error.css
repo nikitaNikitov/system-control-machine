@@ -1,0 +1,16 @@
+div.error,
+div.warning {
+	padding: 10px;
+	font-size: 30px;
+	margin: 0 auto 10px auto;
+	text-align: center;
+	word-wrap: break-word;
+}
+
+div.error {
+	background-color: rgb(255, 163, 163);
+}
+
+div.warning {
+	background-color: rgb(255, 255, 164);
+}

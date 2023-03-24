@@ -4,9 +4,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import CustomUser, QRCode
+from .models import CustomUser, Machine, Perm, QRCode
 
 admin.site.register(QRCode)
+admin.site.register(Machine)
+admin.site.register(Perm)
 
 
 @admin.register(CustomUser)
@@ -26,14 +28,14 @@ class CustomUserAdmin(UserAdmin):
 		*UserAdmin.add_fieldsets,
 		(
 			'Пользовательские поля', {
-				'fields': ('first_name', 'last_name', 'middle_name', 'group', 'status')
+				'fields': ('first_name', 'last_name', 'middle_name', 'group', 'status', 'data')
 			}
 		),
 	)
 
-	fieldsets = (
+	fieldsets = ( # type: ignore # Невозможно адекватно указать тип данных
 		*UserAdmin.fieldsets,
 		('Пользовательские поля', {
-			'fields': ('middle_name', 'group', 'status')
+		'fields': ('middle_name', 'group', 'status', 'data')
 		}),
 	)

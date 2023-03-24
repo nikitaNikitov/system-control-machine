@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css-additional %}
+<link rel="stylesheet" href="{% static 'css/manage.css' %}">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="{% static 'css/modal.css' %}">
+<script defer type="module" src="{% static 'js/machines.js' %}"></script>
+<script defer src="{% static 'js/modal.js' %}"></script>
+{% endblock %}
+{% block title %}
+Управление станками
+{% endblock %}
+
+{% block content %}
+<div class="site-block__wrapper">
+	{% if username != None %}
+	<div class="profile-info">
+		Имя пользователя: {{username}}<br>
+		ФИО: {{last_name}} {{first_name}} {{middle_name}}<br>
+		Группа: {{group}}<br>
+		Статус: {{status}}
+
+	</div>
+	{% endif %}
+	{% if messages %}
+	{% for message in messages %}
+	<div class="profile-info">
+		{{ message|safe }}
+	</div>
+	{% endfor %}
+	{% endif %}
+
+	<div class="search">
+		<input type="search" class="table-search" id="table-search-input" placeholder="Поиск">
+		<button class="table-search" id="table-search-button">Поиск</button>
+	</div>
+
+	<div class="action">
+		<button data-modal="create-machine-modal" class="action-button open-modal" id="create-machine">Создать
+			станок</button>
+		<button data-modal="delete-machines-modal" class="action-button open-modal" id="delete-machines">Удалить
+			выделеные станки</button>
+	</div>
+
+	<table class="user-table">
+		<caption>
+			<h2>Станки</h2>
+		</caption>
+		<colgroup>
+			<col span="1" style="width: 4%;">
+			<col span="1" style="width: 26%;">
+			<col span="1" style="width: 30%;">
+			<col span="1" style="width: 40%;">
+		</colgroup>
+		<thead>
+			<tr>
+				<th><input type="checkbox" name="select-all" id="select-all" aria-label="Выбрать всех пользователей" />
+				</th>
+				<th>Индентификатор</th>
+				<th>Название</th>
+				<th>Описание</th>
+			</tr>
+		</thead>
+		<tbody id="table-body">
+		</tbody>
+	</table>
+
+	<div class="table-pages">
+		<div id="table-page">
+			<span>1</span>
+		</div>
+		<div id="table-limit">
+			<div class="text">Показать:</div>
+
+			<a>1</a>
+			<a>3</a>
+			<a>10</a>
+			<a>100</a>
+		</div>
+	</div>
+</div>
+<div id="create-machine-modal" style="display: none;" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			Создание станка
+			<span data-modal="create-machine-modal" class="close-modal">&times;</span>
+		</div>
+		<div class="modal-body">
+			<form id="create-machine-form" action="/api/addMachine" method="post">
+				{% csrf_token %}
+				<div class="modal-input">
+					Никнейм станка (на английском):
+					<input name="machine_id" required="true" pattern="[A-z0-9]+" minlength="3" maxlength="64"
+						placeholder="3dprinter">
+				</div>
+				<div class="modal-input">
+					Наименование станка:
+					<input name="machine_short_name" required="true" placeholder="3д принтер">
+				</div>
+				<div class="modal-input">
+					Описание станка:
+					<input name="machine_description" placeholder="3д принтер, который установлен в 1234 комнате">
+				</div>
+				<div class="modal-input">
+					Токен станка (можно оставить пустым):
+					<input name="machine_access_token" pattern="[A-z0-9]+" placeholder="1234password1234">
+				</div>
+				<div class="modal-response-info" style="display: none">
+				</div>
+				<button id="create-machine-button" type="submit">Создать</button>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="delete-machines-modal" style="display: none;" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			Удаление станков
+			<span data-modal="delete-machines-modal" class="close-modal">&times;</span>
+		</div>
+		<div class="modal-body">
+			<div class="modal-input">
+				Вы действительно хотите удалить?
+			</div>
+			<div class="modal-response-info" style="display: none">
+			</div>
+			<button id="delete-machines-button">Удалить</button>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block script_after %}
+{% endblock %}
