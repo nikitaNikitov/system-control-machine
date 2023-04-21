@@ -36,6 +36,14 @@ def get_params(request: WSGIRequest) -> QueryDict:
 
 ENGLISH_PATTERN = '[A-z0-9]+'
 RUSSIAN_PATTERN = '[А-яЁё]+'
+TOKEN_PATTERN = '^[A-z\d!@#\$%\^\&*\)\(+=._-]{6,}$'
+
+
+def is_token(token: str) -> bool:
+	"""
+	Проверяет, состоит ли строка только из английских букв и цифр, без пробелов
+	"""
+	return bool(re.fullmatch(TOKEN_PATTERN, token))
 
 
 def has_only_english_and_number_letters(name) -> bool:

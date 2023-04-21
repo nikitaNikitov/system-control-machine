@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block css-additional %}
+{% block additional %}
 <link rel="stylesheet" href="{% static 'css/manage.css' %}">
 <link rel="stylesheet" media="print" onload="this.media='all'" href="{% static 'css/modal.css' %}">
 <script defer type="module" src="{% static 'js/machines.js' %}"></script>
@@ -126,6 +126,39 @@
 			<div class="modal-response-info" style="display: none">
 			</div>
 			<button id="delete-machines-button">Удалить</button>
+		</div>
+	</div>
+</div>
+
+<div id="display-machine-modal" style="display: none;" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			Станок
+			<span data-modal="display-machine-modal" class="close-modal">&times;</span>
+		</div>
+		<div class="modal-body">
+			<div class="modal-input">
+				Индентификатор станка:
+				<div id="display-machine-id">
+				</div>
+			</div>
+			<div class="modal-input">
+				Название станка:
+				<div id="display-machine-name">
+				</div>
+			</div>
+			<div class="modal-input">
+				Описание станка:
+				<div id="display-machine-description">
+				</div>
+			</div>
+			<div class="modal-input">
+				Токен станка для перегенерирования (можно оставить пустым):
+				<input name="machine_access_token" placeholder="1234password1234">
+				<button id="regenerate-access-token-button">Пересоздать токен</button>
+			</div>
+			<div class="modal-response-info" style="display: none">
+			</div>
 		</div>
 	</div>
 </div>

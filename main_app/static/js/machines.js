@@ -8,8 +8,7 @@ const urlMachinesApi = '/api/machines'
 const urlAddMachineApi = '/api/addMachine'
 const urlDeleteMachinesApi = '/api/deleteMachine'
 
-
-
+const urlRegenerateAccessToken = '/api/regenerateAccessToken'
 
 let table_input, select_all, tbody, table_page, create_machine_form
 let ARU = new ApiRequestUtils()
@@ -37,6 +36,59 @@ function getMachineHandler(json) {
 	createPages(json.current_page, json.max_pages)
 }
 
+function regenerateAccessTokenHandler(e) {
+	const machine_id = e.target.getAttribute('data-machine')
+
+	let info = e.target.parentElement.parentElement.getElementsByClassName('modal-response-info')[0]
+	info.className = 'modal-response-info'
+	info.style.display = 'block'
+	if (machine_id == null || machine_id.length == 0) {
+		info.classList.add('info-error')
+		info.innerText = 'В кнопке нет информации о станке'
+		return
+	}
+
+	let token = e.target.parentElement.querySelector("input[name=machine_access_token]").value.trim()
+
+	if (token.length > 0 && !token.match("^[A-z\d!@#\$%\^\&*\)\(+=._-]{6,}$")) {
+		info.classList.add('info-error')
+		info.innerText = 'Токен должен состоять только из английских символов и цифр, и минимум 6 символов'
+		return
+	}
+
+	let params = new URLSearchParams()
+	params.append('machine', machine_id)
+	if (token.length > 0) {
+		params.append('token', token)
+	}
+
+	ARU.post(urlRegenerateAccessToken, params).then(
+		json => {
+			if ('success' in json && json.success) {
+				info.classList.add('info-success')
+				info.innerHTML = `<div>Токен успешно перегенерирован! Скопируйте и сохраните токен доступа: ${json.access_token}</div>`
+
+				let button = document.createElement('button')
+				button.type = 'button'
+				button.innerText = 'Скопировать текст'
+				button.addEventListener('click', e => {
+					navigator.clipboard.writeText(json.access_token)
+				})
+
+				info.appendChild(button)
+				return
+			}
+			info.classList.add('info-error')
+			info.innerText = `Неизвестный ответ от сервера, сообщите администратору: ${json}`
+		},
+		error_json => {
+			if ('error' in error_json) {
+				info.classList.add('info-error')
+				info.innerText = `Неудалось перегенерировать токен для станка '${params.machine_id}'. Код: ${error_json.error}, причина: ${error_json.error_msg}`
+			}
+		})
+}
+
 function createMachineHandler(e) {
 	e.preventDefault();
 	const formData = new FormData(e.target)
@@ -50,7 +102,16 @@ function createMachineHandler(e) {
 		json => {
 			if ('success' in json && json.success) {
 				info.classList.add('info-success')
-				info.innerText = `Станок '${params.get('machine_id')}' успешно добавлен!`
+				info.innerHTML = `<div>Станок '${params.get('machine_id')}' успешно добавлен! Скопируйте и сохраните токен доступа: ${json.access_token}</div>`
+
+				let button = document.createElement('button')
+				button.type = 'button'
+				button.innerText = 'Скопировать текст'
+				button.addEventListener('click', e => {
+					navigator.clipboard.writeText(json.access_token)
+				})
+
+				info.appendChild(button)
 				e.target.reset()
 				getMachines(table_input.value)
 				return
@@ -175,13 +236,20 @@ function createRow(key, obj) {
 			select_all.checked = false
 		}
 	}
-
 	tr.appendChild(td.cloneNode()).appendChild(input1)
 	tr.appendChild(td.cloneNode()).innerText = key
 	tr.appendChild(td.cloneNode()).innerText = obj.short_name
 	tr.appendChild(td.cloneNode()).innerText = obj.description
 	tr.addEventListener('click', e => {
-		// TODO Создать открытие модали с информацией о станке и возможностью перегенерировать токен
+		if (e.target.tagName == "INPUT") {
+			return
+		}
+		document.getElementById('display-machine-id').innerText = key
+		document.getElementById('display-machine-name').innerText = obj.short_name
+		document.getElementById('display-machine-description').innerText = obj.description
+
+		document.getElementById('regenerate-access-token-button').setAttribute("data-machine", key)
+		document.getElementById('display-machine-modal').style.display = 'block'
 	})
 	tbody.appendChild(tr)
 }
@@ -216,6 +284,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	document.getElementById('create-machine-form').addEventListener('submit', createMachineHandler);
 	document.getElementById('delete-machines-button').addEventListener('click', deleteMachinesHandler)
+	document.getElementById('regenerate-access-token-button').addEventListener('click', regenerateAccessTokenHandler)
+
 
 	let limit_spans = document.getElementById('table-limit').getElementsByTagName('a')
 	for (const obj of limit_spans) {

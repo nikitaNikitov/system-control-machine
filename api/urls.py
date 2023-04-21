@@ -4,6 +4,7 @@
 from django.urls import path
 
 from .views import (
+	accesses,
 	add_machine,
 	delete_machine,
 	get_qr,
@@ -11,6 +12,7 @@ from .views import (
 	give_permission,
 	manage,
 	manage_machine,
+	regenerate_machine_token,
 	revoke_permission,
 	show_machines,
 )
@@ -26,4 +28,6 @@ urlpatterns = [
 	path('deleteMachine', delete_machine),
 	# path('revokePermission', revoke_permission),
 	path('machines', show_machines),
+	path('regenerateAccessToken', regenerate_machine_token),
+	path('accesses', accesses),
 ]

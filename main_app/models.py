@@ -141,7 +141,7 @@ class QRCode(models.Model):
 
 
 def generate_access_token() -> str:
-	"""Метод для генирации рандомной строки из 64 символов"""
+	"""Метод для генерации рандомной строки из 64 символов"""
 	return generate_random_string(64)
 
 

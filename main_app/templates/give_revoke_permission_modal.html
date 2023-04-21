@@ -1,0 +1,42 @@
+<div id="give-permission-modal" style="display: none;" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			Выдача прав
+			<span data-modal="give-permission-modal" class="close-modal">&times;</span>
+		</div>
+		<div class="modal-body">
+			<form data-user="{{username}}" id="give-permission-form" method="post">{% csrf_token %}
+				<div class="modal-input">
+					Станок:
+					<input name="machine_id" list="machines" id="give-permission-machine-input">
+				</div>
+				<div class="modal-response-info" style="display: none">
+				</div>
+				<button id="give-permission-button" type="submit">Выдать</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="revoke-permission-modal" style="display: none;" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			Забирание прав
+			<span data-modal="revoke-permission-modal" class="close-modal">&times;</span>
+		</div>
+		<div class="modal-body">
+			<form data-user="{{username}}" id="revoke-permission-form" method="post">{% csrf_token %}
+				<div class="modal-input">
+					Станок:
+					<input name="machine_id" list="machines" id="revoke-permission-machine-input">
+				</div>
+				<div class="modal-response-info" style="display: none">
+				</div>
+				<button id="revoke-permission-button" type="submit">Забрать</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+<datalist id="machines">
+</datalist>

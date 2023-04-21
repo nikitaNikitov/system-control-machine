@@ -28,9 +28,9 @@ window.onclick = function (event) {
 	if (isModal) {
 		event.target.style.display = "none";
 		let info = event.target.getElementsByClassName('modal-response-info');
-		if (info.length > 0) {
-			info[0].className = 'modal-response-info'
-			info[0].style.display = "none";
+		for (const info_element of info) {
+			info_element.className = 'modal-response-info'
+			info_element.style.display = "none";
 		}
 	}
 }

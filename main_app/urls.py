@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.urls import include, path
 
 from .views import (
+	accesses,
 	generate_qr,
 	index_page,
 	login_user,
@@ -28,6 +29,7 @@ urlpatterns = [
 	path('manage', manage, name='manage'),
 	path('machines', machines, name='machines'),
 	path('qr/', generate_qr, name='generate_qr'),
+	path('accesses', accesses),
 	path('api/', include('api.urls')),
 	path(
 		'robots.txt',

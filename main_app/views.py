@@ -13,7 +13,7 @@ from django.shortcuts import redirect, render
 from api import utils
 
 from .forms import RegisterUserForm
-from .models import CustomUser, QRCode
+from .models import CustomUser, Perm, QRCode
 
 
 def check_user(request: WSGIRequest, is_teacher: bool = False) -> HttpResponse | CustomUser:
@@ -193,3 +193,31 @@ def machines(request: WSGIRequest) -> HttpResponse:
 		'status': user.status_display(),
 	}
 	return render(request, 'machines.html', form)
+
+
+@login_required()
+def accesses(request: WSGIRequest) -> HttpResponse:
+	"""
+	Функция отрисовки страницы с информацией о доступе к станкам
+
+	Отрисовывает страницу со списком станков, к которым пользователь имеет доступ
+	"""
+
+	user = check_user(request, False)
+	if isinstance(user, HttpResponse):
+		return user
+
+	machines_access = []
+	for i in Perm.objects.filter(users=user):
+		machines_access.append(i.machine.short_name)
+
+	form: dict[str, Any] = {
+		'username': user.username,
+		'first_name': user.first_name,
+		'last_name': user.last_name,
+		'middle_name': user.middle_name,
+		'group': user.group,
+		'status': user.status_display(),
+		'machines': machines_access,
+	}
+	return render(request, 'accesses.html', form)

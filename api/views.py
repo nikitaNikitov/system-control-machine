@@ -9,7 +9,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse, QueryDict
 from django.views.decorators.csrf import csrf_exempt
 
-from main_app.models import CustomUser, Machine, Perm, QRCode
+from main_app.models import CustomUser, Machine, Perm, QRCode, generate_access_token
 
 from . import utils
 
@@ -241,7 +241,7 @@ def give_permission_users(machine_id: str, users: list[str]) -> dict[str, Any]:
 	"""
 	machine = Machine.objects.filter(id=machine_id).first()
 	if machine is None:
-		return {'error': 13, 'error_msg': 'Machine is not found'}
+		return {'error': 13, 'error_msg': f'Machine \'{machine_id}\' is not found'}
 	error_users: list[str] = []
 	success = False
 	for user in users:
@@ -328,7 +328,7 @@ def revoke_permission_users(machine_id: str, users: list[str]) -> dict[str, Any]
 @login_required
 def show_machines(request: WSGIRequest) -> JsonResponse:
 	"""
-	Функция получения студентов из базы данных по запросу
+	Функция получения станков из базы данных по запросу
 	"""
 	user = check_user(request, is_teacher=True)
 	if isinstance(user, JsonResponse):
@@ -425,7 +425,11 @@ def add_machine_handler(
 	)
 	machine.save()
 
-	data = {'success': True, 'success_msg': 'Machine is added'}
+	data = {
+		'success': True,
+		'success_msg': 'Machine is added',
+		'access_token': machine.access_token
+	}
 	return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
 
 
@@ -477,4 +481,95 @@ def delete_machine(request: WSGIRequest) -> JsonResponse:
 		Machine.objects.filter(id=machine).delete()
 
 	data = {'success': True, 'success_msg': 'Machine(s) is removed'}
+	return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
+
+
+def regenerate_machine_token_handler(machine: Machine, token: str | None) -> JsonResponse:
+	if token is None:
+		for _ in range(100):
+			token = generate_access_token()
+			if not Machine.objects.filter(access_token=token).exists():
+				break
+		else:
+			data = {
+				'error': 1,
+				'error_msg': 'Failed to generate a token that is different from other machines'
+			}
+			return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
+	elif isinstance(token, str):
+		if len(token) < 6:
+			data = {
+				'error': 114,
+				'error_msg': 'Token is too short, which is inconsistent with security'
+			}
+			return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
+
+		if not utils.is_token(token):
+			data = {
+				'error': 114,
+				'error_msg': 'Token must consist of english characters and numbers only'
+			}
+			return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
+		if Machine.objects.filter(access_token=token).exists():
+			data = {'error': 113, 'error_msg': f'Machine with access_token \'{token}\' is exists'}
+			return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
+
+	machine.access_token = token
+	machine.save()
+
+	data = {
+		'success': True,
+		'success_msg': 'Machine token is succeful regenerate',
+		'access_token': token
+	}
+	return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
+
+
+@login_required
+def regenerate_machine_token(request: WSGIRequest) -> JsonResponse:
+	"""
+	Функция пересоздания токена станка
+	"""
+	user = check_user(request, is_teacher=True)
+	if isinstance(user, JsonResponse):
+		return user
+
+	params = utils.get_params(request)
+	if 'machine' not in params:
+		data = {'error': 110, 'error_msg': '\'machine\' argument is missing'}
+		return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
+
+	machine_id = params['machine']
+	machine = Machine.objects.filter(id=machine_id).first()
+	if machine is None:
+		data = {'error': 13, 'error_msg': f'Machine \'{machine_id}\' is not found'}
+		return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
+
+	token = None
+	if 'token' in params:
+		token = params['token']
+
+	if token is not None and not isinstance(token, str):
+		data = {'error': 114, 'error_msg': 'Argument is not string type'}
+		return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
+
+	return regenerate_machine_token_handler(machine, token)
+
+
+@login_required
+def accesses(request: WSGIRequest) -> JsonResponse:
+	"""
+	Функция отображения списка доступных станков
+	"""
+	user = check_user(request, False)
+	if isinstance(user, HttpResponse):
+		return user
+
+	data = {}
+	for i in Perm.objects.filter(users=user):
+		data[i.machine.id] = {
+			'short_name': i.machine.short_name,
+			'description': i.machine.description
+		}
+
 	return JsonResponse(data, json_dumps_params={'ensure_ascii': False})

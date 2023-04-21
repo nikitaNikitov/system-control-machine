@@ -2,14 +2,11 @@
 
 {% load static %}
 
-{% if user.is_teacher %}
 {% block additional %}
 <link rel="stylesheet" media="print" onload="this.media='all'" href="{% static 'css/modal.css' %}">
-<script defer src="{% static 'js/modal.js' %}"></script>
-<script defer type="module" src="{% static 'js/give_revoke_permission_modal.js' %}"></script>
 
 {% endblock %}
-{% endif %}
+
 
 {% block title %}
 Главная страница
@@ -19,10 +16,13 @@
 <div class="site-block__wrapper">
 	{% if username != None %}
 	<div class="profile-info">
-		Имя пользователя: {{username}}<br>
-		ФИО: {{last_name}} {{first_name}} {{middle_name}}<br>
-		Группа: {{group}}<br>
-		Статус: {{status}}
+		Доступы которые действуют в данный момент:
+		<ul>
+			{% for machine in machines %}
+			<li>{{machine}}</li>
+			{% endfor %}
+		</ul>
+
 	</div>
 	{% endif %}
 
@@ -59,9 +59,4 @@
 	{% endfor %}
 	{% endif %}
 </div>
-
-{% if user.is_teacher %}
-{% include 'give_revoke_permission_modal.html' %}
-{% endif %}
-
 {% endblock %}
