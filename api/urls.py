@@ -12,6 +12,7 @@ from .views import (
 	give_permission,
 	manage,
 	manage_machine,
+	profile,
 	regenerate_machine_token,
 	revoke_permission,
 	show_machines,
@@ -30,4 +31,5 @@ urlpatterns = [
 	path('machines', show_machines),
 	path('regenerateAccessToken', regenerate_machine_token),
 	path('accesses', accesses),
+	path('profile/', profile),
 ]

@@ -103,6 +103,23 @@ def get_qr(request: WSGIRequest) -> HttpResponse:
 	return JsonResponse(QRCode.generate_code(user), json_dumps_params={'ensure_ascii': False})
 
 
+@login_required
+def profile(request: WSGIRequest) -> JsonResponse:
+	"""
+	Функция получения профиля пользователя
+	"""
+	user = check_user(request, is_teacher=False)
+	if isinstance(user, JsonResponse):
+		return user
+	data: dict = {
+		'username': user.username,
+		'fullname': f'{user.last_name} {user.first_name} {user.middle_name}',
+		'group': user.group,
+		'status': user.status_display()
+	}
+	return JsonResponse(data, json_dumps_params={'ensure_ascii': False})
+
+
 def check_user(
 	request: WSGIRequest,
 	is_teacher: bool = False,
